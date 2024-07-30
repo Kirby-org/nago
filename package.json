@@ -1,6 +1,6 @@
 {
   "name": "nago.js",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "nago Physics Engine",
   "main": "index.js",
   "repository": {
