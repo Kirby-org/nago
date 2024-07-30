@@ -1,0 +1,24 @@
+{
+  "name": "nago",
+  "version": "0.0.2",
+  "description": "nago Physics Engine",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kirby-org/nago.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kirby-org/nago/issues"
+  },
+  "keywords": [
+    "nago",
+    "physics",
+    "engine"
+  ],
+  "author": "wxyz-abcd <mail.api.test.1.1.1@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/Kirby-org/nago",
+  "engines": {
+    "node": ">=16.9.0"
+  }
+}
