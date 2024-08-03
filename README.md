@@ -14,10 +14,9 @@ This physics engine has been recovered from minified Haxball(https://www.haxball
 
 - Use `npm run-script esbuild-noMinify` to build the engine without minification. 
 - Use `npm run-script esbuild` to build the engine with minification.
+- Use `npm run-script esbuild-haxball` to build the engine with specific minification aimed at using the physics engine inside Haxball's minified codes. (More specifically, inside the `src/api.js` of the `node-haxball` package.) The `mangle-cache.json` file is also maintained for now to keep the variable names stable and same as the Haxball game, in order to be able to replace and test the physics engine inside the Haxball game. 
 
 The outputs are in `dist` folder, and can directly be used inside browsers.
-
-The `mangle-cache.json` file is also maintained for now to keep the variable names stable and same as the Haxball game, in order to be able to replace and test the physics engine inside the Haxball game. If you want to mangle the names randomly, you may delete the file, and/or change the `esbuild` script to not include the `mangle-cache` and/or `mangle-props` options.
 
 ## Installing
 

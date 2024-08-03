@@ -1,6 +1,6 @@
 {
   "name": "nago.js",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "nago Physics Engine",
   "main": "src/index.js",
   "repository": {
@@ -9,7 +9,8 @@
   },
   "scripts": {
     "esbuild-noMinify": ".\\node_modules\\.bin\\esbuild src/index.js --platform=node --format=iife --global-name=nago --bundle --sourcemap=external --outfile=dist/nago.js --analyze=verbose",
-    "esbuild": ".\\node_modules\\.bin\\esbuild src/index.js --platform=node --format=iife --global-name=nago --bundle --minify --mangle-props=.*? --mangle-cache=mangle-cache.json --sourcemap=external --outfile=dist/nago.min.js --analyze=verbose"
+    "esbuild-haxball": ".\\node_modules\\.bin\\esbuild src/index.js --platform=node --format=iife --global-name=nago --bundle --minify --mangle-props=.*? --mangle-cache=mangle-cache.json --sourcemap=external --outfile=dist/nago.hax.js --analyze=verbose",
+    "esbuild": ".\\node_modules\\.bin\\esbuild src/index.js --platform=node --format=iife --global-name=nago --bundle --minify --sourcemap=external --outfile=dist/nago.min.js --analyze=verbose"
   },
   "bugs": {
     "url": "https://github.com/Kirby-org/nago/issues"
