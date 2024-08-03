@@ -30,15 +30,15 @@ var nago = (() => {
     }
   });
 
-  // src/FiniteArcObject.js
-  var require_FiniteArcObject = __commonJS({
-    "src/FiniteArcObject.js"(exports, module) {
+  // src/ArcObject.js
+  var require_ArcObject = __commonJS({
+    "src/ArcObject.js"(exports, module) {
       var Point = require_Point();
       var minSegmentCurvature = 0.17435839227423353;
       var maxSegmentCurvature = 5.934119456780721;
       var degreeToRadians = 0.017453292519943295;
       var radiansToDegreeTimes2 = 114.59155902616465;
-      function FiniteArcObject(param) {
+      function ArcObject(param) {
         var { cGroup = 32, cMask = 63, bCoef = 1, bias = 0, p0 = null, p1 = null } = param || {};
         this.normal = null;
         this.p1NormalDir = null;
@@ -53,7 +53,7 @@ var nago = (() => {
         this.cGroup = cGroup;
         this.curveF = Infinity;
       }
-      FiniteArcObject.prototype = {
+      ArcObject.prototype = {
         setCurveDegrees: function(curve) {
           curve *= degreeToRadians;
           if (curve < 0) {
@@ -98,7 +98,7 @@ var nago = (() => {
           }
         }
       };
-      module.exports = FiniteArcObject;
+      module.exports = ArcObject;
     }
   });
 
@@ -305,7 +305,7 @@ var nago = (() => {
         this.moveableCircularObjects = [];
         this.dotObjects = [];
         this.infiniteLinearObjects = [];
-        this.finiteArcObjects = [];
+        this.arcObjects = [];
         this.distanceConstraints = [];
         this.finiteLinearSensors = [];
       }
@@ -378,7 +378,7 @@ var nago = (() => {
               k.y = l.y - g * f.y;
               callbacks?._CDP_ && callbacks?._CDP_(a, c.playerId, d);
             }
-            for (d = 0, e = this.finiteArcObjects; d < e.length; d++) {
+            for (d = 0, e = this.arcObjects; d < e.length; d++) {
               f = e[d];
               if (!(f.cMask & c.cGroup) || !(f.cGroup & c.cMask))
                 continue;
@@ -558,7 +558,7 @@ var nago = (() => {
       module.exports = {
         Point: require_Point(),
         DotObject: require_DotObject(),
-        FiniteArcObject: require_FiniteArcObject(),
+        ArcObject: require_ArcObject(),
         InfiniteLinearObject: require_InfiniteLinearObject(),
         FiniteLinearSensor: require_FiniteLinearSensor(),
         CircularObject: require_CircularObject(),

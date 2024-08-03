@@ -1,7 +1,7 @@
 module.exports = {
   Point: require("./Point"),
   DotObject: require("./DotObject"),
-  FiniteArcObject: require("./FiniteArcObject"),
+  ArcObject: require("./ArcObject"),
   InfiniteLinearObject: require("./InfiniteLinearObject"),
   FiniteLinearSensor: require("./FiniteLinearSensor"),
   CircularObject: require("./CircularObject"),

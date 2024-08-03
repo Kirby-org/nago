@@ -80,5 +80,7 @@
   "degreeToRadians": "s",
   "maxSegmentCurvature": "t",
   "minSegmentCurvature": "i",
-  "radiansToDegreeTimes2": "r"
+  "radiansToDegreeTimes2": "r",
+  "ArcObject": "e",
+  "arcObjects": "n"
 }

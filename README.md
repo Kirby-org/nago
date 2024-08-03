@@ -33,15 +33,15 @@ You can import the `./dist/nago.min.js` file directly by adding this script tag 
 For starters, here is a simple example usage:
 
 ```js
-var { World, DotObject, MoveableCircularObject, FiniteArcObject } = require("nago.js");
+var { World, DotObject, MoveableCircularObject, ArcObject } = require("nago.js");
 var world = new World();
 var v1 = new DotObject({xpos: -10, ypos: 30});
 var v2 = new DotObject({xpos: 10, ypos: 30});
 world.dotObjects.push(v1);
 world.dotObjects.push(v2);
-var arc = new FiniteArcObject({p0: v1, p1: v2});
+var arc = new ArcObject({p0: v1, p1: v2});
 arc.calculateNormals(); // you must run this function whenever you update this arc object.
-world.finiteArcObjects.push(arc);
+world.arcObjects.push(arc);
 var disc = new MoveableCircularObject({xpos: 0, ypos: 0, radius: 5, xspeed: 0.1, yspeed: 2});
 world.moveableCircularObjects.push(disc);
 // you may do this part inside a timeout, interval or requestanimationframe etc callback.
@@ -74,7 +74,7 @@ This creates a physical world. All collision logic is handled here.
 
 #### Properties
   - `dotObjects`: An array that contains the dot objects. (vertices)
-  - `finiteArcObjects`: An array that contains the finite arc objects. (segments)
+  - `arcObjects`: An array that contains the arc objects. (segments)
   - `finiteLinearSensors`: An array that contains the finite linear sensors. (goals)
   - `infiniteLinearObjects`: An array that contains the infinite linear objects. (planes)
   - `moveableCircularObjects`: An array that contains the moveable circular objects. (discs)
@@ -116,20 +116,20 @@ world.dotObjects.push(dotObject);
   - `bCoef`: The bouncing coefficient of the object. (`float`)
   - `pos`: The position of the object. (`Point`)
 
-### FiniteArcObject
+### ArcObject
 
 This is an object that connects two `DotObject`s with a collideable arc. This is synonymous to a "segment" in Haxball stadiums, and can collide with discs (aka `MoveableCircularObject`s). They are not able to move.
 
-To create a `FiniteArcObject`, you can do this:
+To create a `ArcObject`, you can do this:
 
 ```js
-var arcObject = new nago.FiniteArcObject();
+var arcObject = new nago.ArcObject();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.finiteArcObjects.push(arcObject);
+world.arcObjects.push(arcObject);
 ```
 
 #### constructor({cGroup=32, cMask=63, bCoef=1, bias=0, p0=null, p1=null})

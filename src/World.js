@@ -2,7 +2,7 @@ function World() { // Fa
   this.moveableCircularObjects=[]; // F
   this.dotObjects=[]; // J
   this.infiniteLinearObjects=[]; // qa
-  this.finiteArcObjects=[]; // U
+  this.arcObjects=[]; // U
   this.distanceConstraints=[]; // pb
   this.finiteLinearSensors=[]; // tc
 }
@@ -77,7 +77,7 @@ World.prototype = {
         k.y = l.y-g*f.y;
         callbacks?._CDP_ && callbacks?._CDP_(a, c.playerId, d); // discId, discPlayerId, planeId
       }
-      for (d = 0, e = this.finiteArcObjects; d<e.length; d++){
+      for (d = 0, e = this.arcObjects; d<e.length; d++){
         f = e[d];
         if (!(f.cMask & c.cGroup) || !(f.cGroup & c.cMask))
           continue;

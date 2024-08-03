@@ -5,7 +5,7 @@ const maxSegmentCurvature = 5.934119456780721; // ~= 340 degrees * pi/180.
 const degreeToRadians = 0.017453292519943295; // ~= pi/180.
 const radiansToDegreeTimes2 = 114.59155902616465; // ~= 360/pi.
 
-function FiniteArcObject(param) { // E
+function ArcObject(param) { // E
   var {cGroup=32, cMask=63, bCoef=1, bias=0, p0=null, p1=null} = (param||{});
   this.normal = null; // wa
   this.p1NormalDir = null; // Ig
@@ -20,7 +20,7 @@ function FiniteArcObject(param) { // E
   this.cGroup = cGroup; // v
   this.curveF = Infinity; // vb
 }
-FiniteArcObject.prototype = {
+ArcObject.prototype = {
   setCurveDegrees: function(curve) { // Oc
     curve *= degreeToRadians;
     if (curve<0) {
@@ -67,4 +67,4 @@ FiniteArcObject.prototype = {
   }
 }
 
-module.exports = FiniteArcObject;
+module.exports = ArcObject;
