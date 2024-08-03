@@ -1,4 +1,4 @@
-[![GitHub package.json version](https://img.shields.io/github/package-json/cGroup/Kirby-org/nago?style=flat-square)](https://github.com/Kirby-org/nago) [![NPM Version](https://img.shields.io/npm/cGroup/nago.js?style=flat-square)](https://www.npmjs.com/package/nago.js) [![NPM Monthly Downloads](https://img.shields.io/npm/dm/nago.js?style=flat-square)](https://npmjs.org/package/nago.js)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/Kirby-org/nago?style=flat-square)](https://github.com/Kirby-org/nago) [![NPM Version](https://img.shields.io/npm/v/nago.js?style=flat-square)](https://www.npmjs.com/package/nago.js) [![NPM Monthly Downloads](https://img.shields.io/npm/dm/nago.js?style=flat-square)](https://npmjs.org/package/nago.js)
 
 [![License](https://img.shields.io/github/license/Kirby-org/nago?style=flat-square)](LICENSE) [![Last Commit](https://img.shields.io/github/last-commit/Kirby-org/nago?style=flat-square)](https://github.com/Kirby-org/nago/commits/) ![Language Most Used](https://img.shields.io/github/languages/top/Kirby-org/nago?style=flat-square) ![Repository Size](https://img.shields.io/github/repo-size/Kirby-org/nago?style=flat-square)
 
@@ -23,7 +23,7 @@ The `mangle-cache.json` file is also maintained for now to keep the variable nam
 
 ### Installing for node.js:
 
-To install the package, you can use `npm install nago`. You can then use `var nago = require("nago");` to have your physics engine ready to use.
+To install the package, you can use `npm install nago.js`. You can then use `var nago = require("nago");` to have your physics engine ready to use.
 
 ### Installing for a browser environment:
 
@@ -80,9 +80,9 @@ This creates a physical world. All collision logic is handled here.
   - `distanceConstraints`: An array that contains the distance constraints. (joints)
 
 #### Functions
-  - `advance(time, callbacks)`: Advances the physics engine `time` seconds. `callbacks` may include `_CDD_(discId1, playerId1, discId2, playerId2)`(Collision Disc vs Disc), `_CDP_(discId1, playerId1, planeId)`(Collision Disc vs Plane), `_CDS_(discId1, playerId1, segmentId)`(Collision Disc vs Segment), `_CDV_(discId1, playerId1, vertexId, modifiedSpeed)`((Collision Disc vs Vertex)) and `_MJ_(jointId, modifiedPosition, modifiedSpeed)`(Modified Joint).
-  - `addMoveableCircularObject(obj)`: Adds the given moveable circular object(`obj`) into the world's relevant array.
-  - `removeMoveableCircularObject(obj)`: Removes the moveable circular object(`obj`) from the world's relevant array.
+  - `advance(time: float32, callbacks?: object): void`: Advances the physics engine `time` seconds. `callbacks` may include `_CDD_(discId1: int32, playerId1: int32, discId2: int32, playerId2: int32)`(Collision Disc vs Disc), `_CDP_(discId1: int32, playerId1: int32, planeId: int32)`(Collision Disc vs Plane), `_CDS_(discId1: int32, playerId1: int32, segmentId: int32)`(Collision Disc vs Segment), `_CDV_(discId1: int32, playerId1: int32, vertexId: int32, modifiedSpeed: boolean)`(Collision Disc vs Vertex) and `_MJ_(jointId: int32, modifiedPosition: boolean, modifiedSpeed: boolean)`(Modified Joint).
+  - `addMoveableCircularObject(obj: MoveableCircularObject): void`: Adds the given moveable circular object(`obj`) into the world's relevant array.
+  - `removeMoveableCircularObject(obj: MoveableCircularObject): void`: Removes the moveable circular object(`obj`) from the world's relevant array.
 
 #### You will have to add some physical objects into your new `World` object to observe the effects. Currently, the available types of objects are as follows:
 
@@ -183,6 +183,9 @@ world.finiteLinearSensors.push(sensorObject);
 #### Properties
   - `p0`: The first point of the finite line. (`Point`)
   - `p1`: The second point of the finite line. (`Point`)
+
+#### Functions
+  - `advance(oldPos, newPos): boolean`: Returns `true` if the `newPos` and `oldPos` are on different sides of this sensor, possibly implying that the object has just passed this finite line.
 
 ### InfiniteLinearObject
 
