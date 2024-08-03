@@ -30,15 +30,15 @@ var nago = (() => {
     }
   });
 
-  // src/FiniteLinearObject.js
-  var require_FiniteLinearObject = __commonJS({
-    "src/FiniteLinearObject.js"(exports, module) {
+  // src/FiniteArcObject.js
+  var require_FiniteArcObject = __commonJS({
+    "src/FiniteArcObject.js"(exports, module) {
       var Point = require_Point();
       var minSegmentCurvature = 0.17435839227423353;
       var maxSegmentCurvature = 5.934119456780721;
       var degreeToRadians = 0.017453292519943295;
       var radiansToDegreeTimes2 = 114.59155902616465;
-      function FiniteLinearObject(param) {
+      function FiniteArcObject(param) {
         var { cGroup = 32, cMask = 63, bCoef = 1, bias = 0, p0 = null, p1 = null } = param || {};
         this.normal = null;
         this.p1NormalDir = null;
@@ -53,7 +53,7 @@ var nago = (() => {
         this.cGroup = cGroup;
         this.curveF = Infinity;
       }
-      FiniteLinearObject.prototype = {
+      FiniteArcObject.prototype = {
         setCurveDegrees: function(curve) {
           curve *= degreeToRadians;
           if (curve < 0) {
@@ -98,7 +98,7 @@ var nago = (() => {
           }
         }
       };
-      module.exports = FiniteLinearObject;
+      module.exports = FiniteArcObject;
     }
   });
 
@@ -305,7 +305,7 @@ var nago = (() => {
         this.moveableCircularObjects = [];
         this.dotObjects = [];
         this.infiniteLinearObjects = [];
-        this.finiteLinearObjects = [];
+        this.finiteArcObjects = [];
         this.distanceConstraints = [];
         this.finiteLinearSensors = [];
       }
@@ -352,7 +352,7 @@ var nago = (() => {
               z = e - z;
               y.x = f.x + x * z;
               y.y = f.y + t * z;
-              callbacks._CDD_ && callbacks._CDD_(a, c.playerId, d, oldA.playerId);
+              callbacks?._CDD_ && callbacks?._CDD_(a, c.playerId, d, oldA.playerId);
             }
             if (c.invMass == 0)
               continue;
@@ -376,9 +376,9 @@ var nago = (() => {
               f = f.normal;
               k.x = l.x - g * f.x;
               k.y = l.y - g * f.y;
-              callbacks._CDP_ && callbacks._CDP_(a, c.playerId, d);
+              callbacks?._CDP_ && callbacks?._CDP_(a, c.playerId, d);
             }
-            for (d = 0, e = this.finiteLinearObjects; d < e.length; d++) {
+            for (d = 0, e = this.finiteArcObjects; d < e.length; d++) {
               f = e[d];
               if (!(f.cMask & c.cGroup) || !(f.cGroup & c.cMask))
                 continue;
@@ -441,7 +441,7 @@ var nago = (() => {
                 t = f = c.speed;
                 f.x = t.x - s * z;
                 f.y = t.y - y * z;
-                callbacks._CDS_ && callbacks._CDS_(a, c.playerId, d);
+                callbacks?._CDS_ && callbacks?._CDS_(a, c.playerId, d);
               }
             }
             for (d = 0, e = this.dotObjects; d < e.length; d++) {
@@ -461,14 +461,14 @@ var nago = (() => {
               l = c.speed;
               l = g * l.x + k * l.y;
               if (!(l < 0)) {
-                callbacks._CDV_ && callbacks._CDV_(a, c.playerId, d, false);
+                callbacks?._CDV_ && callbacks?._CDV_(a, c.playerId, d, false);
                 continue;
               }
               l *= c.bCoef * f.bCoef + 1;
               h = f = c.speed;
               f.x = h.x - g * l;
               f.y = h.y - k * l;
-              callbacks._CDV_ && callbacks._CDV_(a, c.playerId, d, true);
+              callbacks?._CDV_ && callbacks?._CDV_(a, c.playerId, d, true);
             }
           }
           for (a = 0; a < 2; a++)
@@ -510,7 +510,7 @@ var nago = (() => {
                 x = x.invMass;
                 y.x = d.x - e * x;
                 y.y = d.y - z * x;
-                callbacks._MJ_ && callbacks._MJ_(b, false, true);
+                callbacks?._MJ_ && callbacks?._MJ_(b, false, true);
               } else {
                 g = f * d;
                 var l = y.pos, h = y.pos;
@@ -534,7 +534,7 @@ var nago = (() => {
                   y.x = x.x + e * d;
                   y.y = x.y + z * d;
                 }
-                callbacks._MJ_ && callbacks._MJ_(b, true, sc);
+                callbacks?._MJ_ && callbacks?._MJ_(b, true, sc);
               }
             }
         },
@@ -558,7 +558,7 @@ var nago = (() => {
       module.exports = {
         Point: require_Point(),
         DotObject: require_DotObject(),
-        FiniteLinearObject: require_FiniteLinearObject(),
+        FiniteArcObject: require_FiniteArcObject(),
         InfiniteLinearObject: require_InfiniteLinearObject(),
         FiniteLinearSensor: require_FiniteLinearSensor(),
         CircularObject: require_CircularObject(),
