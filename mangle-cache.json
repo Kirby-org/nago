@@ -1,7 +1,7 @@
 {
   "Point": false,
   "DotObject": false,
-  "FiniteArcObject": false,
+  "ArcObject": false,
   "InfiniteLinearObject": false,
   "FiniteLinearSensor": false,
   "CircularObject": false,
@@ -11,7 +11,7 @@
   "moveableCircularObjects": "F",
   "dotObjects": "J",
   "infiniteLinearObjects": "qa",
-  "finiteArcObjects": "U",
+  "arcObjects": "U",
   "distanceConstraints": "pb",
   "finiteLinearSensors": "tc",
   "cGroup": "v",
@@ -80,7 +80,5 @@
   "degreeToRadians": "s",
   "maxSegmentCurvature": "t",
   "minSegmentCurvature": "i",
-  "radiansToDegreeTimes2": "r",
-  "ArcObject": "e",
-  "arcObjects": "n"
+  "radiansToDegreeTimes2": "r"
 }
