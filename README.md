@@ -23,7 +23,7 @@ The `mangle-cache.json` file is also maintained for now to keep the variable nam
 
 ### Installing for node.js:
 
-To install the package, you can use `npm install nago.js`. You can then use `var nago = require("nago");` to have your physics engine ready to use.
+To install the package, you can use `npm install nago.js`. You can then use `var nago = require("nago.js");` to have your physics engine ready to use.
 
 ### Installing for a browser environment:
 
@@ -34,17 +34,19 @@ You can import the `./dist/nago.min.js` file directly by adding this script tag 
 For starters, here is a simple example usage:
 
 ```js
-var { World, DotObject, MoveableCircularObject, FiniteArcObject } = require("nago");
+var { World, DotObject, MoveableCircularObject, FiniteArcObject } = require("nago.js");
 var world = new World();
 var v1 = new DotObject({xpos: -10, ypos: 30});
 var v2 = new DotObject({xpos: 10, ypos: 30});
 world.dotObjects.push(v1);
 world.dotObjects.push(v2);
-world.finiteArcObjects.push(new FiniteArcObject(p0: v1, p1: v2));
-var disc = new MoveableCircularObject({xpos: 0, ypos: 0, radius: 5, xspeed: 1, yspeed: 2});
+var arc = new FiniteArcObject({p0: v1, p1: v2});
+arc.calculateNormals(); // you must run this function whenever you update this arc object.
+world.finiteArcObjects.push(arc);
+var disc = new MoveableCircularObject({xpos: 0, ypos: 0, radius: 5, xspeed: 0.1, yspeed: 2});
 world.moveableCircularObjects.push(disc);
 // you may do this part inside a timeout, interval or requestanimationframe etc callback.
-for (var i=0;i<20;i++){
+for (var i=0;i<50;i++){
   // you may render the physical world on screen here any way you like.
   // for illustration, we will only log some example values.
   console.log(disc.pos.x, disc.pos.y, disc.speed.x, disc.speed.y);
