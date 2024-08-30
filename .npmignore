@@ -107,4 +107,4 @@ dist
 .vscode*
 
 #Custom
-package-lock.json
+test/haxball.js

@@ -1,11 +1,11 @@
 module.exports = {
   Point: require("./Point"),
-  DotObject: require("./DotObject"),
-  ArcObject: require("./ArcObject"),
-  InfiniteLinearObject: require("./InfiniteLinearObject"),
-  FiniteLinearSensor: require("./FiniteLinearSensor"),
-  CircularObject: require("./CircularObject"),
-  DistanceConstraint: require("./DistanceConstraint"),
-  MoveableCircularObject: require("./MoveableCircularObject"),
+  Vertex: require("./Vertex"),
+  Segment: require("./Segment"),
+  Plane: require("./Plane"),
+  LinearSensor: require("./LinearSensor"),
+  Disc: require("./Disc"),
+  Joint: require("./Joint"),
+  MoveableDisc: require("./MoveableDisc"),
   World: require("./World")
 };

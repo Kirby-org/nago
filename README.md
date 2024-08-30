@@ -12,17 +12,15 @@ This physics engine has been recovered from minified Haxball(https://www.haxball
 
 ## Building
 
-- Use `npm run-script esbuild-noMinify` to build the engine without minification. 
-- Use `npm run-script esbuild` to build the engine with minification.
-- Use `npm run-script esbuild-haxball` to build the engine with specific minification aimed at using the physics engine inside Haxball's minified codes. (More specifically, inside the `src/api.js` of the `node-haxball` package.) The `mangle-cache.json` file is also maintained for now to keep the variable names stable and same as the Haxball game, in order to be able to replace and test the physics engine inside the Haxball game. 
+- Use `npm run-script build` to build/minify the engine.
 
-The outputs are in `dist` folder, and can directly be used inside browsers.
+The outputs will be in `dist` folder, and can directly be used inside browsers or node.js.
 
 ## Installing
 
 ### Installing for node.js:
 
-To install the package, you can use `npm install nago.js`. You can then use `var nago = require("nago.js");` to have your physics engine ready to use.
+To install the package, you can use `npm install nago.js` and then import the library using `var nago = require("nago.js");`.
 
 ### Installing for a browser environment:
 
@@ -33,17 +31,17 @@ You can import the `./dist/nago.min.js` file directly by adding this script tag 
 For starters, here is a simple example usage:
 
 ```js
-var { World, DotObject, MoveableCircularObject, ArcObject } = require("nago.js");
+var { World, Vertex, MoveableDisc, Segment } = require("nago.js");
 var world = new World();
-var v1 = new DotObject({xpos: -10, ypos: 30});
-var v2 = new DotObject({xpos: 10, ypos: 30});
-world.dotObjects.push(v1);
-world.dotObjects.push(v2);
-var arc = new ArcObject({p0: v1, p1: v2});
+var v0 = new Vertex({xpos: -10, ypos: 30});
+var v1 = new Vertex({xpos: 10, ypos: 30});
+world.vertices.push(v0);
+world.vertices.push(v1);
+var arc = new Segment({v0, v1});
 arc.calculateNormals(); // you must run this function whenever you update this arc object.
-world.arcObjects.push(arc);
-var disc = new MoveableCircularObject({xpos: 0, ypos: 0, radius: 5, xspeed: 0.1, yspeed: 2});
-world.moveableCircularObjects.push(disc);
+world.segments.push(arc);
+var disc = new MoveableDisc({xpos: 0, ypos: 0, radius: 5, xspeed: 0.1, yspeed: 2});
+world.discs.push(disc);
 // you may do this part inside a timeout, interval or requestanimationframe etc callback.
 for (var i=0;i<50;i++){
   // you may render the physical world on screen here any way you like.
@@ -73,34 +71,33 @@ This creates a physical world. All collision logic is handled here.
   - no parameters
 
 #### Properties
-  - `dotObjects`: An array that contains the dot objects. (vertices)
-  - `arcObjects`: An array that contains the arc objects. (segments)
-  - `finiteLinearSensors`: An array that contains the finite linear sensors. (goals)
-  - `infiniteLinearObjects`: An array that contains the infinite linear objects. (planes)
-  - `moveableCircularObjects`: An array that contains the moveable circular objects. (discs)
-  - `distanceConstraints`: An array that contains the distance constraints. (joints)
+  - `vertices`: An array that contains the dot objects. (vertices)
+  - `segments`: An array that contains the arc objects. (segments)
+  - `planes`: An array that contains the infinite linear objects. (planes)
+  - `discs`: An array that contains the moveable circular objects. (discs)
+  - `joints`: An array that contains the distance constraints. (joints)
 
 #### Functions
-  - `advance(time: float32, callbacks?: object): void`: Advances the physics engine `time` seconds. `callbacks` may include `_CDD_(discId1: int32, playerId1: int32, discId2: int32, playerId2: int32)`(Collision Disc vs Disc), `_CDP_(discId1: int32, playerId1: int32, planeId: int32)`(Collision Disc vs Plane), `_CDS_(discId1: int32, playerId1: int32, segmentId: int32)`(Collision Disc vs Segment), `_CDV_(discId1: int32, playerId1: int32, vertexId: int32, modifiedSpeed: boolean)`(Collision Disc vs Vertex) and `_MJ_(jointId: int32, modifiedPosition: boolean, modifiedSpeed: boolean)`(Modified Joint).
-  - `addMoveableCircularObject(obj: MoveableCircularObject): void`: Adds the given moveable circular object(`obj`) into the world's relevant array.
-  - `removeMoveableCircularObject(obj: MoveableCircularObject): void`: Removes the moveable circular object(`obj`) from the world's relevant array.
+  - `advance(time: float32, callbacks?: object): void`: Advances the physics engine `time` seconds. `callbacks` may include `onCollisionDvD(discId1: int32, playerId1: int32, discId2: int32, playerId2: int32)`(Collision Disc vs Disc), `onCollisionDvP(discId1: int32, playerId1: int32, planeId: int32)`(Collision Disc vs Plane), `onCollisionDvS(discId1: int32, playerId1: int32, segmentId: int32)`(Collision Disc vs Segment), `onCollisionDvV(discId1: int32, playerId1: int32, vertexId: int32, modifiedSpeed: boolean)`(Collision Disc vs Vertex) and `onModifyJ(jointId: int32, modifiedPosition: boolean, modifiedSpeed: boolean)`(Modified Joint).
+  - `addDisc(obj: MoveableDisc): void`: Adds the given moveable circular object(`obj`) into the world's relevant array.
+  - `removeDisc(obj: MoveableDisc): void`: Removes the moveable circular object(`obj`) from the world's relevant array.
 
 #### You will have to add some physical objects into your new `World` object to observe the effects. Currently, the available types of objects are as follows:
 
-### DotObject
+### Vertex
 
-This is synonymous to a "vertex" in Haxball stadiums, and can collide with discs (aka `MoveableCircularObject`s). They are not able to move.
+This is synonymous to a "vertex" in Haxball stadiums, and can collide with discs (aka `MoveableDisc`s). They are not able to move.
 
-To create a `DotObject`, you can do this:
+To create a `Vertex`, you can do this:
 
 ```js
-var dotObject = new nago.DotObject();
+var dotObject = new nago.Vertex();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.dotObjects.push(dotObject);
+world.vertices.push(dotObject);
 ```
 
 #### constructor({cGroup=32, cMask=63, bCoef=1, xpos=0, ypos=0})
@@ -116,40 +113,40 @@ world.dotObjects.push(dotObject);
   - `bCoef`: The bouncing coefficient of the object. (`float`)
   - `pos`: The position of the object. (`Point`)
 
-### ArcObject
+### Segment
 
-This is an object that connects two `DotObject`s with a collideable arc. This is synonymous to a "segment" in Haxball stadiums, and can collide with discs (aka `MoveableCircularObject`s). They are not able to move.
+This is an object that connects two `Vertex`s with a collideable arc. This is synonymous to a "segment" in Haxball stadiums, and can collide with discs (aka `MoveableDisc`s). They are not able to move.
 
-To create a `ArcObject`, you can do this:
+To create a `Segment`, you can do this:
 
 ```js
-var arcObject = new nago.ArcObject();
+var arcObject = new nago.Segment();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.arcObjects.push(arcObject);
+world.segments.push(arcObject);
 ```
 
-#### constructor({cGroup=32, cMask=63, bCoef=1, bias=0, p0=null, p1=null})
+#### constructor({cGroup=32, cMask=63, bCoef=1, bias=0, v0=null, v1=null})
   - `cGroup`: The collision group of the object.
   - `cMask`: The collision mask of the object.
   - `bCoef`: The bouncing coefficient of the object.
   - `bias`: The bias coefficient of the object.
-  - `p0`: The first `DotObject` to connect.
-  - `p1`: The second `DotObject` to connect.
+  - `v0`: The first `Vertex` to connect.
+  - `v1`: The second `Vertex` to connect.
 
 #### Properties
   - `cGroup`: The collision group of the object. (`int32`)
   - `cMask`: The collision mask of the object. (`int32`)
   - `bCoef`: The bouncing coefficient of the object. (`float`)
   - `bias`: The bias coefficient of the object. (`float`)
-  - `p0`: The first `DotObject` to connect. (`DotObject`)
-  - `p1`: The second `DotObject` to connect. (`DotObject`)
+  - `v0`: The first `Vertex` to connect. (`Vertex`)
+  - `v1`: The second `Vertex` to connect. (`Vertex`)
   - `normal`: The auto-calculated normal direction of the object. If the object is curved, this will be `null`. (`Point`)
-  - `p0Normal`: The auto-calculated normal direction of the object's tangent line at `p0`. If the object is not curved, this will be `null`. (`Point`)
-  - `p1Normal`: The auto-calculated normal direction of the object's tangent line at `p1`. If the object is not curved, this will be `null`. (`Point`)
+  - `v0Normal`: The auto-calculated normal direction of the object's tangent line at `v0`. If the object is not curved, this will be `null`. (`Point`)
+  - `v1Normal`: The auto-calculated normal direction of the object's tangent line at `v1`. If the object is not curved, this will be `null`. (`Point`)
   - `arcRadius`: The auto-calculated radius of the arc. If the object is not curved, this will be `null`. (`float`)
   - `arcCenter`: The auto-calculated center of the arc. If the object is not curved, this will be `null`. (`Point`)
   - `curveF`: The auto-calculated curve value of the arc in radians. If the object is not curved, this will be `Infinity`. (`float`)
@@ -159,20 +156,14 @@ world.arcObjects.push(arcObject);
   - `setCurveDegrees(curve)`: Sets the real curve value of the arc in degrees. You also have to run `calculateNormals()` after running this.
   - `calculateNormals()`: Calculates the normals and arc values for collisions.
 
-### FiniteLinearSensor
+### LinearSensor
 
-This is synonymous to a "goal" in Haxball stadiums, and can NOT collide with discs (aka `MoveableCircularObject`s). They only have a function inside to sense if a moveable object has passed a finite line. They are not able to move.
+This is synonymous to a "goal" in Haxball stadiums, and can NOT collide with discs (aka `MoveableDisc`s). They only have a function inside to sense if a moveable object has passed a finite line. They are not able to move.
 
-To create a `FiniteLinearSensor`, you can do this:
-
-```js
-var sensorObject = new nago.FiniteLinearSensor();
-```
-
-You will have to add it to a `World` object for it to have any effect. You can do that with this:
+To create a `LinearSensor`, you can do this:
 
 ```js
-world.finiteLinearSensors.push(sensorObject);
+var sensorObject = new nago.LinearSensor();
 ```
 
 #### constructor({p0x=0, p0y=0, p1x=0, p1y=0})
@@ -186,22 +177,22 @@ world.finiteLinearSensors.push(sensorObject);
   - `p1`: The second point of the finite line. (`Point`)
 
 #### Functions
-  - `advance(oldPos, newPos): boolean`: Returns `true` if the `newPos` and `oldPos` are on different sides of this sensor, possibly implying that the object has just passed this finite line.
+  - `check(oldPos, newPos): boolean`: Returns `true` if the `newPos` and `oldPos` are on different sides of this sensor, possibly implying that the object has just passed this finite line.
 
-### InfiniteLinearObject
+### Plane
 
-This is synonymous to a "plane" in Haxball stadiums, and can collide with discs (aka `MoveableCircularObject`s). They are not able to move.
+This is synonymous to a "plane" in Haxball stadiums, and can collide with discs (aka `MoveableDisc`s). They are not able to move.
 
-To create a `InfiniteLinearObject`, you can do this:
+To create a `Plane`, you can do this:
 
 ```js
-var linearObject = new nago.InfiniteLinearObject();
+var linearObject = new nago.Plane();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.infiniteLinearObjects.push(linearObject);
+world.planes.push(linearObject);
 ```
 
 #### constructor({cGroup=32, cMask=63, bCoef=1, dist=0, xnormal=0, ynormal=0})
@@ -219,14 +210,14 @@ world.infiniteLinearObjects.push(linearObject);
   - `dist`: The distance of the object to the origin. (`float`)
   - `normal`: The normal of the object. (`Point`)
 
-### CircularObject
+### Disc
 
 This is synonymous to a "disc" in Haxball stadiums, but they cannot be used inside the physics engine itself. They can be used for the representation of discs inside stadiums.
 
-To create a `CircularObject`, you can do this:
+To create a `Disc`, you can do this:
 
 ```js
-var circularObject = new nago.CircularObject();
+var circularObject = new nago.Disc();
 ```
 
 #### constructor({cGroup=63, cMask=63, damping=0.99, invMass=1, bCoef=0.5, radius=10, xgravity=0, ygravity=0, xspeed=0, yspeed=0, xpos=0, ypos=0})
@@ -254,29 +245,29 @@ var circularObject = new nago.CircularObject();
   - `speed`: The speed of the object. (`Point`)
   - `gravity`: The gravity of the object. (`Point`)
 
-### MoveableCircularObject
+### MoveableDisc
 
 This is synonymous to a "disc" in Haxball stadiums, and can collide with everything except sensors and constraints. They are currently the only moveable objects in this physics engine.
 
-To create a `MoveableCircularObject`, you can do this:
+To create a `MoveableDisc`, you can do this:
 
 ```js
-var circularObject = new nago.MoveableCircularObject();
+var circularObject = new nago.MoveableDisc();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.moveableCircularObjects.push(circularObject);
+world.discs.push(circularObject);
 ```
 
 #### constructor({cGroup=63, cMask=63, damping=0.99, invMass=1, bCoef=0.5, radius=10, xgravity=0, ygravity=0, xspeed=0, yspeed=0, xpos=0, ypos=0})
 
-Same as `CircularObject`.
+Same as `Disc`.
 
 #### Properties
 
-Same as `CircularObject`.
+Same as `Disc`.
 
 #### Functions
 
@@ -284,20 +275,20 @@ Same as `CircularObject`.
 - `applyForce(force: float, xc: float, yc: float): void`: Applies the given `force` to the object by changing the velocity vector depending on the object's `invMass` value. Used twice to apply force to both player and ball in the opposite directions while kicking the ball.
 - `isMoving(): boolean`: Returns `true` if the object has a non-zero velocity.
 
-### DistanceConstraint
+### Joint
 
-This is synonymous to a "joint" in Haxball stadiums, and can NOT collide with discs (aka `MoveableCircularObject`s). They are not able to move.
+This is synonymous to a "joint" in Haxball stadiums, and can NOT collide with discs (aka `MoveableDisc`s). They are not able to move.
 
-To create a `DistanceConstraint`, you can do this:
+To create a `Joint`, you can do this:
 
 ```js
-var distanceConstraint = new nago.DistanceConstraint();
+var distanceConstraint = new nago.Joint();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.distanceConstraints.push(distanceConstraint);
+world.joints.push(distanceConstraint);
 ```
 
 #### constructor({strength=Infinity, minLength=100, maxLength=100, d0=0, d1=0})

@@ -1,6 +1,6 @@
 var Point = require("./Point");
 
-function InfiniteLinearObject(param) { // L
+function Plane(param) { // L
   var {cGroup=32, cMask=63, bCoef=1, dist=0, xnormal=0, ynormal=0} = (param||{});
   this.cGroup = cGroup; // v
   this.cMask = cMask; // h
@@ -9,4 +9,4 @@ function InfiniteLinearObject(param) { // L
   this.normal = new Point(xnormal, ynormal); // wa
 }
 
-module.exports = InfiniteLinearObject;
+module.exports = Plane;
