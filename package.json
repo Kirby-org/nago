@@ -1,7 +1,7 @@
 {
   "name": "nago.js",
   "version": "0.6.0",
-  "description": "nago Physics Engine",
+  "description": "nago 2D Physics Engine",
   "main": "dist/nago.min.js",
   "repository": {
     "type": "git",
@@ -17,7 +17,8 @@
   "keywords": [
     "nago",
     "physics",
-    "engine"
+    "engine",
+    "2d"
   ],
   "author": "wxyz-abcd <mail.api.test.1.1.1@gmail.com>",
   "license": "MIT",

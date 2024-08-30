@@ -8,7 +8,7 @@
 
 This is the official repository for the nago Physics Engine. (https://github.com/Kirby-org/nago)
 
-This physics engine has been recovered from minified Haxball(https://www.haxball.com) codes, and is currently the original physics engine for this game. Use at your own risk.
+This is a 2d physics engine that has been recovered from minified Haxball(https://www.haxball.com) codes, and is currently the original physics engine for this game. Use at your own risk.
 
 ## Building
 
@@ -71,33 +71,33 @@ This creates a physical world. All collision logic is handled here.
   - no parameters
 
 #### Properties
-  - `vertices`: An array that contains the dot objects. (vertices)
-  - `segments`: An array that contains the arc objects. (segments)
-  - `planes`: An array that contains the infinite linear objects. (planes)
-  - `discs`: An array that contains the moveable circular objects. (discs)
-  - `joints`: An array that contains the distance constraints. (joints)
+  - `vertices`: An array that contains all vertices.
+  - `segments`: An array that contains all segments.
+  - `planes`: An array that contains all planes.
+  - `discs`: An array that contains all discs.
+  - `joints`: An array that contains all joints.
 
 #### Functions
-  - `advance(time: float32, callbacks?: object): void`: Advances the physics engine `time` seconds. `callbacks` may include `onCollisionDvD(discId1: int32, playerId1: int32, discId2: int32, playerId2: int32)`(Collision Disc vs Disc), `onCollisionDvP(discId1: int32, playerId1: int32, planeId: int32)`(Collision Disc vs Plane), `onCollisionDvS(discId1: int32, playerId1: int32, segmentId: int32)`(Collision Disc vs Segment), `onCollisionDvV(discId1: int32, playerId1: int32, vertexId: int32, modifiedSpeed: boolean)`(Collision Disc vs Vertex) and `onModifyJ(jointId: int32, modifiedPosition: boolean, modifiedSpeed: boolean)`(Modified Joint).
-  - `addDisc(obj: MoveableDisc): void`: Adds the given moveable circular object(`obj`) into the world's relevant array.
-  - `removeDisc(obj: MoveableDisc): void`: Removes the moveable circular object(`obj`) from the world's relevant array.
+  - `advance(time: float32, callbacks?: object): void`: Advances the physics engine `time` ticks. `callbacks` may include `onCollisionDvD(discId1: int32, playerId1: int32, discId2: int32, playerId2: int32)`(Collision Disc vs Disc), `onCollisionDvP(discId1: int32, playerId1: int32, planeId: int32)`(Collision Disc vs Plane), `onCollisionDvS(discId1: int32, playerId1: int32, segmentId: int32)`(Collision Disc vs Segment), `onCollisionDvV(discId1: int32, playerId1: int32, vertexId: int32, modifiedSpeed: boolean)`(Collision Disc vs Vertex) and `onModifyJ(jointId: int32, modifiedPosition: boolean, modifiedSpeed: boolean)`(Modified Joint).
+  - `addDisc(obj: MoveableDisc): void`: Adds the given moveable disc(`obj`) into the world's relevant array.
+  - `removeDisc(obj: MoveableDisc): void`: Removes the moveable disc(`obj`) from the world's relevant array.
 
 #### You will have to add some physical objects into your new `World` object to observe the effects. Currently, the available types of objects are as follows:
 
 ### Vertex
 
-This is synonymous to a "vertex" in Haxball stadiums, and can collide with discs (aka `MoveableDisc`s). They are not able to move.
+These static objects can collide with `MoveableDisc`s.
 
 To create a `Vertex`, you can do this:
 
 ```js
-var dotObject = new nago.Vertex();
+var vertex = new nago.Vertex();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.vertices.push(dotObject);
+world.vertices.push(vertex);
 ```
 
 #### constructor({cGroup=32, cMask=63, bCoef=1, xpos=0, ypos=0})
@@ -115,18 +115,18 @@ world.vertices.push(dotObject);
 
 ### Segment
 
-This is an object that connects two `Vertex`s with a collideable arc. This is synonymous to a "segment" in Haxball stadiums, and can collide with discs (aka `MoveableDisc`s). They are not able to move.
+This is a static object that connects two `Vertex`es with a collideable arc, and can collide with `MoveableDisc`s.
 
 To create a `Segment`, you can do this:
 
 ```js
-var arcObject = new nago.Segment();
+var segment = new nago.Segment();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.segments.push(arcObject);
+world.segments.push(segment);
 ```
 
 #### constructor({cGroup=32, cMask=63, bCoef=1, bias=0, v0=null, v1=null})
@@ -158,7 +158,7 @@ world.segments.push(arcObject);
 
 ### LinearSensor
 
-This is synonymous to a "goal" in Haxball stadiums, and can NOT collide with discs (aka `MoveableDisc`s). They only have a function inside to sense if a moveable object has passed a finite line. They are not able to move.
+These metaphysical "object"s can NOT collide with `MoveableDisc`s. They only have a function inside to sense if a `MoveableDisc` has passed a finite line.
 
 To create a `LinearSensor`, you can do this:
 
@@ -179,20 +179,22 @@ var sensorObject = new nago.LinearSensor();
 #### Functions
   - `check(oldPos, newPos): boolean`: Returns `true` if the `newPos` and `oldPos` are on different sides of this sensor, possibly implying that the object has just passed this finite line.
 
+You do NOT have to add it to a `World` object for it to have an effect.
+
 ### Plane
 
-This is synonymous to a "plane" in Haxball stadiums, and can collide with discs (aka `MoveableDisc`s). They are not able to move.
+These static objects in the shape of an infinite line can collide with `MoveableDisc`s.
 
 To create a `Plane`, you can do this:
 
 ```js
-var linearObject = new nago.Plane();
+var plane = new nago.Plane();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.planes.push(linearObject);
+world.planes.push(plane);
 ```
 
 #### constructor({cGroup=32, cMask=63, bCoef=1, dist=0, xnormal=0, ynormal=0})
@@ -212,12 +214,12 @@ world.planes.push(linearObject);
 
 ### Disc
 
-This is synonymous to a "disc" in Haxball stadiums, but they cannot be used inside the physics engine itself. They can be used for the representation of discs inside stadiums.
+These static objects in the shape of a disc can NOT collide with anything because this class is not meant to be used inside the physics engine itself. They can only be used for the representation of discs while generating custom "map"s etc.
 
 To create a `Disc`, you can do this:
 
 ```js
-var circularObject = new nago.Disc();
+var disc = new nago.Disc();
 ```
 
 #### constructor({cGroup=63, cMask=63, damping=0.99, invMass=1, bCoef=0.5, radius=10, xgravity=0, ygravity=0, xspeed=0, yspeed=0, xpos=0, ypos=0})
@@ -247,18 +249,18 @@ var circularObject = new nago.Disc();
 
 ### MoveableDisc
 
-This is synonymous to a "disc" in Haxball stadiums, and can collide with everything except sensors and constraints. They are currently the only moveable objects in this physics engine.
+These moveable objects in the shape of a disc can collide with everything except sensors and joints. They are currently the only moveable objects in this physics engine.
 
 To create a `MoveableDisc`, you can do this:
 
 ```js
-var circularObject = new nago.MoveableDisc();
+var disc = new nago.MoveableDisc();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.discs.push(circularObject);
+world.discs.push(disc);
 ```
 
 #### constructor({cGroup=63, cMask=63, damping=0.99, invMass=1, bCoef=0.5, radius=10, xgravity=0, ygravity=0, xspeed=0, yspeed=0, xpos=0, ypos=0})
@@ -277,18 +279,18 @@ Same as `Disc`.
 
 ### Joint
 
-This is synonymous to a "joint" in Haxball stadiums, and can NOT collide with discs (aka `MoveableDisc`s). They are not able to move.
+These metaphysical objects in the shape of a finite line can NOT collide with `MoveableDisc`s. They are distance constraints to bind the `MoveableDisc`s together and restrict their movements.
 
 To create a `Joint`, you can do this:
 
 ```js
-var distanceConstraint = new nago.Joint();
+var joint = new nago.Joint();
 ```
 
 You will have to add it to a `World` object for it to have any effect. You can do that with this:
 
 ```js
-world.joints.push(distanceConstraint);
+world.joints.push(joint);
 ```
 
 #### constructor({strength=Infinity, minLength=100, maxLength=100, d0=0, d1=0})
